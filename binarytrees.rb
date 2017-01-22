@@ -10,8 +10,11 @@ class Array
 		half = self.size / 2
 		[self[0...half], self[half..-1]]
 	end
-end
 
+	def build_tree
+		Node.tree(self.sort)
+	end
+end
 
 class Node
 	attr_accessor :value, :child_a, :child_b
@@ -33,13 +36,16 @@ class Node
 		node
 	end
 	
-	def breadth_first_search
-		
-		
-	end
+	#def breadth_first_search
+	#	self.bfs(self)		
+	#end
 	
-	def self.bfs
-		
+	def self.dfs_rec(tree, arr = [])
+		return arr if tree.nil?
+		arr << tree.value
+		self.dfs_rec(tree.child_a, arr)
+		self.dfs_rec(tree.child_b, arr)
+		arr
 	end
 		
 end
@@ -47,5 +53,6 @@ end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
-
-node= Node.build_tree(array)
+tree = array.build_tree
+#p tree
+p Node.dfs_rec(tree)
