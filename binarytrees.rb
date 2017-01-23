@@ -50,6 +50,19 @@ class Node
 	end
 
 	def depth_first_search
+		array = []
+		stack = [self]
+		loop do
+			break if stack.empty?
+			node = stack.pop
+			array << node.value
+			stack << node.child_b unless node.child_b.nil?
+			stack << node.child_a unless node.child_a.nil?			
+		end
+		array
+	end
+
+	def depth_first_search_rec
 		self.class.dfs_rec(self)
 	end
 	
@@ -60,15 +73,15 @@ class Node
 		self.dfs_rec(tree.child_b, arr)		#right
 		arr
 	end
-		
 end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
+tree = array.build_tree
+
 puts "Input array: #{array.inspect}"
 puts "Sorted array: #{array.sort.inspect}"
 
-tree = array.build_tree
-
 puts "Depth-First Search: #{tree.depth_first_search.inspect}"
+puts "Depth-First Search (recursive): #{tree.depth_first_search_rec.inspect}"
 puts "Breadth-First Search: #{tree.breadth_first_search}"
