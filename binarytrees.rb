@@ -1,4 +1,3 @@
-
 class Array
 	# Divides an array into two parts.
 	# If the number of elements is an odd number, 
@@ -14,6 +13,7 @@ class Array
 	def build_tree
 		Node.tree(self.sort)
 	end
+
 end
 
 class Node
@@ -37,22 +37,20 @@ class Node
 	end
 	
 	def breadth_first_search
-		array = []		
-		stack = [[self]]
+		array = []
+		queue = [self]
 		loop do
-			temp = []
-			p stack.last
-			stack.last.each do |node|
-				array << node.value	unless node.nil?
-				temp << node.child_a unless node.nil? || node.child_a.nil?	
-				temp << node.child_b unless node.nil? || node.child_b.nil?
-			end
-
-			break if temp.empty?
-			stack << temp
+			break if queue.empty?
+			node = queue.shift
+			array << node.value
+			queue << node.child_a unless node.child_a.nil?
+			queue << node.child_b unless node.child_b.nil?
 		end
-
 		array
+	end
+
+	def depth_first_search
+		self.class.dfs_rec(self)
 	end
 	
 	def self.dfs_rec(tree, arr = [])		# dfs pre-order (root, left, right)
@@ -66,8 +64,11 @@ class Node
 end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-#puts "Input array: #{array.inspect}"
+
+puts "Input array: #{array.inspect}"
+puts "Sorted array: #{array.sort.inspect}"
+
 tree = array.build_tree
 
-#puts "Depth-First Search: #{Node.dfs_rec(tree).inspect}"
+puts "Depth-First Search: #{tree.depth_first_search.inspect}"
 puts "Breadth-First Search: #{tree.breadth_first_search}"
