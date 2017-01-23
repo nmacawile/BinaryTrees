@@ -49,16 +49,45 @@ class Node
 		array
 	end
 
-	def depth_first_search
+	def depth_first_search(config = :inorder)
 		array = []
-		stack = [self]
-		loop do
-			break if stack.empty?
-			node = stack.pop
-			array << node.value
-			stack << node.child_b unless node.child_b.nil?
-			stack << node.child_a unless node.child_a.nil?			
+		stack = []
+		# dfs pre-order (root, left, right)
+		if(config == :preorder)
+			stack = [self]
+			loop do
+				break if stack.empty?
+				node = stack.pop
+				array << node.value
+				stack << node.child_b unless node.child_b.nil?
+				stack << node.child_a unless node.child_a.nil?
+			end
+
+		# dfs in-order (left, root, right)
+		elsif(config == :inorder)
+			node = self
+			loop do
+				break if node.nil?
+				unless node.child_a.nil?
+					stack << node
+					node = node.child_a
+				else
+					array << node.value
+					node = stack.pop
+					array << node.value	
+					node = node.child_b.nil? ? stack.pop : node.child_b
+				end				
+			end
+
+		# dfs post-order (left, right, root)
+		elsif(config == :postorder)
+			node = self
+			loop do
+					
+			end
+
 		end
+
 		array
 	end
 
@@ -79,9 +108,9 @@ array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 tree = array.build_tree
 
-puts "Input array: #{array.inspect}"
-puts "Sorted array: #{array.sort.inspect}"
+#puts "Input array: #{array.inspect}"
+#puts "Sorted array: #{array.sort.inspect}"
 
 puts "Depth-First Search: #{tree.depth_first_search.inspect}"
-puts "Depth-First Search (recursive): #{tree.depth_first_search_rec.inspect}"
-puts "Breadth-First Search: #{tree.breadth_first_search}"
+#puts "Depth-First Search (recursive): #{tree.depth_first_search_rec.inspect}"
+#puts "Breadth-First Search: #{tree.breadth_first_search}"
