@@ -49,7 +49,7 @@ class Node
 		array
 	end
 
-	def depth_first_search(config = :inorder)
+	def depth_first_search(config = :postorder)
 		array = []
 		stack = []
 		# dfs pre-order (root, left, right)
@@ -82,10 +82,45 @@ class Node
 		# dfs post-order (left, right, root)
 		elsif(config == :postorder)
 			node = self
-			loop do
+			loop do				
+				unless node.child_a.nil?
+					stack << node
+					node = node.child_a
+				else
+					array << node.value
+					if node.eql? stack.last.child_a
+						unless stack.last.child_b.nil?
+							node = stack.last.child_b
+						else
+							node = stack.pop
+							array << node.value
+							while node.eql? stack.last.child_b
+								node = stack.pop
+								array << node.value
+								break if stack.empty?
+							end
+							
+							unless stack.empty? || stack.last.child_b.nil?
+								node = stack.last.child_b
+							end
+						end
+					elsif node.eql? stack.last.child_b
+						node = stack.pop
+						array << node.value
+						
+						if node.eql? stack.last.child_b
+							array << stack.pop.value
+							node = stack.last.child_b
+						else
+							node = stack.last.child_b
+							
+						end
+					end
 					
+					break if stack.empty?
+				end
 			end
-
+		
 		end
 
 		array
