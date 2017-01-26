@@ -49,7 +49,7 @@ class Node
 		array
 	end
 
-	def depth_first_search(config = :postorder)
+	def depth_first_search(config = :preorder)
 		array = []
 		stack = []
 		# dfs pre-order (root, left, right)
@@ -143,9 +143,9 @@ array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 tree = array.build_tree
 
-#puts "Input array: #{array.inspect}"
-#puts "Sorted array: #{array.sort.inspect}"
+puts "Input array: #{array.inspect}"
+puts "Sorted array: #{array.sort.inspect}"
 
 puts "Depth-First Search: #{tree.depth_first_search.inspect}"
-#puts "Depth-First Search (recursive): #{tree.depth_first_search_rec.inspect}"
-#puts "Breadth-First Search: #{tree.breadth_first_search}"
+puts "Depth-First Search (recursive): #{tree.depth_first_search_rec.inspect}"
+puts "Breadth-First Search: #{tree.breadth_first_search}"
