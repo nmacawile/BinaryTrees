@@ -49,7 +49,7 @@ class Node
 		array
 	end
 
-	def depth_first_search(config = :preorder)
+	def depth_first_search(config = :postorder)
 		array = []
 		stack = []
 		# dfs pre-order (root, left, right)
@@ -81,44 +81,13 @@ class Node
 
 		# dfs post-order (left, right, root)
 		elsif(config == :postorder)
-			node = self
-			loop do				
-				unless node.child_a.nil?
-					stack << node
-					node = node.child_a
-				else
-					array << node.value
-					if node.eql? stack.last.child_a
-						unless stack.last.child_b.nil?
-							node = stack.last.child_b
-						else
-							node = stack.pop
-							array << node.value
-							while node.eql? stack.last.child_b
-								node = stack.pop
-								array << node.value
-								break if stack.empty?
-							end
-							
-							unless stack.empty? || stack.last.child_b.nil?
-								node = stack.last.child_b
-							end
-						end
-					elsif node.eql? stack.last.child_b
-						node = stack.pop
-						array << node.value
-						
-						if node.eql? stack.last.child_b
-							array << stack.pop.value
-							node = stack.last.child_b
-						else
-							node = stack.last.child_b
-							
-						end
-					end
-					
-					break if stack.empty?
-				end
+			stack = [self]
+			loop do
+				break if stack.empty?
+				node = stack.pop
+				array.unshift(node.value)
+				stack << node.child_a unless node.child_a.nil?
+				stack << node.child_b unless node.child_b.nil?				
 			end
 		
 		end
@@ -146,6 +115,9 @@ tree = array.build_tree
 puts "Input array: #{array.inspect}"
 puts "Sorted array: #{array.sort.inspect}"
 
-puts "Depth-First Search: #{tree.depth_first_search.inspect}"
-puts "Depth-First Search (recursive): #{tree.depth_first_search_rec.inspect}"
+puts "Depth-First Search (pre-order): #{tree.depth_first_search(:preorder).inspect}"
+puts "Depth-First Search (in-order): #{tree.depth_first_search(:inorder).inspect}"
+puts "Depth-First Search (post-order): #{tree.depth_first_search(:postorder).inspect}"
+
+puts "Depth-First Search (pre-order, recursive): #{tree.depth_first_search_rec.inspect}"
 puts "Breadth-First Search: #{tree.breadth_first_search}"
